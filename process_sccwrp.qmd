@@ -1,0 +1,143 @@
+---
+title: "Process SCCWRP Bight Data"
+format: html
+---
+
+## Read CSVs
+
+```{r}
+#| warning: false
+librarian::shelf(
+  dplyr, DT, fs, glue, here, purrr, readr, sf, stringr, tidyr,
+  quiet = T)
+options(readr.show_col_types = F)
+
+dir_sb <- here("data/sccwrp_bight")
+
+D <- tibble(
+  path_csv = list.files(dir_sb, "csv$", full.names = T),
+  base_csv = basename(path_csv),
+  csv_mb   = as.numeric(file_info(path_csv)$size)/1e6,
+  data     = map(path_csv, read_csv),
+  n_rows   = map_int(data, nrow),
+  n_cols   = map_int(data, ~length(colnames(.))))
+
+# TODO: handle parsing issues (n=3)
+# Warning: One or more parsing issues, call `problems()` on your data frame for
+# details, e.g.:
+#   dat <- vroom(...)
+#   problems(dat)
+
+D %>% 
+  select(-path_csv, -data) %>% 
+  datatable() %>% 
+  formatRound(
+    c("csv_mb"), digits=2) %>% 
+  formatRound(
+    c("n_rows", "n_cols"), digits=0)
+```
+
+## Sediment Chemistry across Years ('08,'13,'18)
+
+```{r}
+p_sta_geo  <- here("data/stations.geojson")
+d_smpl_csv <- here("data/samples.csv")
+d_res_csv  <- here("data/results.csv")
+
+d <- D %>% 
+  filter(
+    str_detect(base_csv, ".+Sediment_Chemistry_Harmonized\\.csv$")) %>% 
+  mutate(
+    # Can't combine `x[[1]]$truevalue` <character> and `x[[3]]$truevalue` <double>
+    data = map(data, ~select(., -truevalue))) %>% 
+  unnest(data)
+
+# colnames(d)
+#  [1] "path_csv"                "base_csv"                "csv_mb"                  "X"                      
+#  [5] "Y"                       "objectid"                "stationid"               "latitude"               
+#  [9] "longitude"               "stratum"                 "region"                  "surveyyear"             
+# [13] "sampledate"              "stationdepth"            "labname"                 "sampletype"             
+# [17] "matrix"                  "analytename"             "result"                  "units"                  
+# [21] "qualifier"               "rl"                      "mdl"                     "bioaccumulationsampleid"
+# [25] "preparationbatchid"      "analysisbatchid"         "fraction"                "analysismethod"         
+# [29] "analysismethoddescr"     "fieldduplicate"          "labreplicate"            "labsampleid"            
+# [33] "qacode"                  "qacodedescr"             "areaweight"              "originalstationid"      
+# [37] "analyteclass"            "stationtype"             "analysisdate"            "comments"               
+# [41] "globalid"                "n_rows"                  "n_cols"                 
+d_sta <- d %>%
+  distinct(longitude, latitude, stationid, stationdepth, stratum, region) %>%
+  group_by(
+    stationid) %>%
+  summarize(
+    n_lon     = length(unique(longitude)),
+    n_lat     = length(unique(latitude)),
+    n_depth   = length(unique(stationdepth)),
+    n_stratum = length(unique(stratum)),
+    n_region  = length(unique(region)))
+#
+# table(d_sta$n_lon)
+#    1    2 
+# 1134    4
+#
+# table(d_sta$n_lat)
+#    1    2 
+# 1136    2 
+#
+# table(d_sta$n_depth)
+#   1   2   3 
+# 956  41 141
+#
+# table(d_sta$n_stratum)
+#    1    2 
+# 1136    2
+#
+# table(d_sta$n_region)
+#    1 
+# 1138 
+#
+# table(d$sampletype)
+# Matrix spike 1 Matrix spike 2         Result 
+#           2296           2142         159422 
+# filter
+# sampletype == "Result"
+
+# station points
+p_sta <- d %>% 
+  group_by(
+    stationid) %>% 
+  summarize(
+    longitude = first(longitude),
+    latitude  = first(latitude),
+    stratum   = first(stratum), 
+    region    = first(region)) %>% 
+  st_as_sf(
+    coords = c("longitude", "latitude"), remove = F,
+    crs = 4326)
+# 1138 x 5
+
+d_smpl <- d %>% 
+  distinct(
+    stationid, stationdepth, surveyyear, sampledate, labsampleid, labname)
+# 4,430 × 6
+
+d_res <- d %>% 
+  filter(
+    sampletype == "Result") %>% 
+  select(
+    labsampleid, analysisdate, analysismethod, analysismethoddescr,
+    analyteclass, analytename,
+    result, units)
+# 163,860 × 8
+
+# p_sta (station points) < d_smpl (sample data) < d_res (sample results)
+
+write_sf(p_sta, p_sta_geo)
+write_csv(d_smpl, d_smpl_csv)
+write_csv(d_res, d_res_csv)
+```
+
+```{r}
+leaflet()
+```
+
+
