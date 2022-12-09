@@ -131,7 +131,7 @@ d_res <- d %>%
 
 # p_sta (station points) < d_smpl (sample data) < d_res (sample results)
 
-write_sf(p_sta, p_sta_geo)
+write_sf(p_sta, p_sta_geo, delete_dsn = T)
 write_csv(d_smpl, d_smpl_csv)
 write_csv(d_res, d_res_csv)
 ```
