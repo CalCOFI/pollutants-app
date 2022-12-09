@@ -136,8 +136,4 @@ write_csv(d_smpl, d_smpl_csv)
 write_csv(d_res, d_res_csv)
 ```
 
-```{r}
-leaflet()
-```
-
 
