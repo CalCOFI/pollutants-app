@@ -1,8 +1,10 @@
 # pollutants-app
 Pollutants app (starting with DDT, PFAS, microplastics) with CalCOFI regional partners
 
-https://shiny.calcofi.io/pollutants
-![](./figures/screen_app_dde.png)
+- App: [shiny.calcofi.io/pollutants](https://shiny.calcofi.io/pollutants)
+  ![](./figures/screen_app_dde.png)
+
+- Scripts: [calcofi.io/pollutants-app](http://calcofi.io/pollutants-app/)
 
 ## html
 
