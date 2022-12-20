@@ -1,6 +1,11 @@
 # packages ----
+if (!require("librarian")){
+  install.packages("librarian")
+  library(librarian)
+}
 librarian::shelf(
-  bslib, dplyr, DT, fs, glue, here, leaflet, purrr, readr, sf, shiny, stringr, tidyr,
+  bslib, dplyr, DT, fs, glue, here, leaflet, purrr, readr, sf, shiny, stringr,
+  tidyr,
   quiet = T)
 options(readr.show_col_types = F)
 
