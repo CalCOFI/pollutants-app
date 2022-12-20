@@ -1,5 +1,5 @@
 navbarPage(
-  "CA Marine Pollutants App",
+  "SoCal Marine Pollutants",
   theme = bs_theme(
     bootswatch = "darkly",
     code_font = font_collection(
@@ -8,7 +8,7 @@ navbarPage(
     heading_font = font_google("Kdam Thmor Pro")),
   tags$style(type = "text/css", "#map {height: calc(100vh - 106px) !important;}"),
   tabPanel(
-    "Query",
+    "Map",
     sidebarLayout(
       sidebarPanel(
         width = 2,
@@ -21,12 +21,12 @@ navbarPage(
       mainPanel(
         width = 10,
         leafletOutput("map") ) ) ),
-  tabPanel(
-    "Download",
-    "TODO"),
-  tabPanel(
-    "Submit",
-    "TODO"),
+  # tabPanel(
+  #   "Download",
+  #   "TODO"),
+  # tabPanel(
+  #   "Upload",
+  #   "TODO"),
   tabPanel(
     "About",
     includeMarkdown("about.md"))
