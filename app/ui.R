@@ -29,13 +29,13 @@ navbarPage(
     "TODO"),
   tabPanel(
     "About",
-    includeMarkdown("about.md")),
-  navbarMenu(
-    "More",
-    tabPanel(
-      "Summary"),
-    "----",
-    "Section header",
-    tabPanel(
-      "Table"))
+    includeMarkdown("about.md"))
+  # navbarMenu(
+  #   "More",
+  #   tabPanel(
+  #     "Summary"),
+  #   "----",
+  #   "Section header",
+  #   tabPanel(
+  #     "Table"))
 )
