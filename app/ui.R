@@ -22,11 +22,14 @@ navbarPage(
         width = 10,
         leafletOutput("map") ) ) ),
   tabPanel(
-    "Download"),
+    "Download",
+    "TODO"),
   tabPanel(
-    "Submit"),
+    "Submit",
+    "TODO"),
   tabPanel(
-    "About"),
+    "About",
+    includeMarkdown("about.md")),
   navbarMenu(
     "More",
     tabPanel(

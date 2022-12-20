@@ -50,7 +50,17 @@ shinyServer(function(input, output, session){
 
     leaflet() %>%
       addProviderTiles(
-        providers$Esri.OceanBasemap) %>%
+        providers$Esri.NatGeoWorldMap,
+        group   = "NatGeo",
+        options = providerTileOptions(opacity = 0.3)) %>%
+      addProviderTiles(
+        providers$Stamen.Toner,
+        group   = "Toner",
+        options = providerTileOptions(opacity = 0.3)) %>%
+      addProviderTiles(
+        providers$Stamen.TonerLite,
+        group   = "TonerLite",
+        options = providerTileOptions(opacity = 0.3)) %>%
       addCircleMarkers(
         data  = p, weight = 2, # stroke = F,
         color = ~pal(result),
@@ -58,10 +68,16 @@ shinyServer(function(input, output, session){
         popup = ~glue(
           "sampledate: {sampledate}<br>
           stationdepth: {stationdepth}<br>
-          result: {result} {units}")) %>%
+          result: {result} {units}"),
+        group = "SCWRRP Stations") %>%
       addLegend(
-        pal = pal, values = p$result,
-        title = glue("{input$sel_analyte} ({units})"))
+        pal   = pal, values = p$result,
+        title = glue("{input$sel_analyte} ({units})")) %>%
+      addLayersControl(
+        baseGroups    = c("Toner Lite", "Toner", "NatGeo"),
+        overlayGroups = c("SCWRRP Stations"),
+        position      = "bottomleft",
+        options       = layersControlOptions(collapsed = T))
   })
 
 })
