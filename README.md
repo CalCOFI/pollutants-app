@@ -19,4 +19,4 @@ These web pages (\*.html) are typically rendered from Rmarkdown (\*.Rmd) or Quar
 
 ## source
 
-See https://github.com/CalCOFI/scripts
+See [github.com/CalCOFI/pollutants-app](https://github.com/CalCOFI/pollutants-app)
