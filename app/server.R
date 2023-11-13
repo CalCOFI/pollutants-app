@@ -50,17 +50,16 @@ shinyServer(function(input, output, session){
 
     leaflet() %>%
       addProviderTiles(
-        providers$Esri.NatGeoWorldMap,
-        group   = "NatGeo",
-        options = providerTileOptions(opacity = 0.3)) %>%
+        "Esri.OceanBasemap",
+        options = providerTileOptions(
+          variant = "Ocean/World_Ocean_Base",
+          opacity = 0.4)) |>
+      # add reference: placename labels and borders
       addProviderTiles(
-        providers$Stamen.Toner,
-        group   = "Toner",
-        options = providerTileOptions(opacity = 0.3)) %>%
-      addProviderTiles(
-        providers$Stamen.TonerLite,
-        group   = "TonerLite",
-        options = providerTileOptions(opacity = 0.3)) %>%
+        "Esri.OceanBasemap",
+        options = providerTileOptions(
+          variant = "Ocean/World_Ocean_Reference",
+          opacity = 0.4)) |>
       addCircleMarkers(
         data  = p, weight = 2, # stroke = F,
         color = ~pal(result),
