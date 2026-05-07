@@ -1,5 +1,6 @@
 navbarPage(
   "SoCal Marine Pollutants",
+  header = tags$head(includeHTML("google-analytics.html")),
   theme = bs_theme(
     bootswatch = "darkly",
     code_font = font_collection(
