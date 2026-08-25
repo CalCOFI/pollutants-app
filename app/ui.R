@@ -5,7 +5,10 @@ function(request) navbarPage(
   # shows one variant per theme) sits in its brand slot beside the title, and
   # the dark/light switch in a nav_item at the right — not a second bar
   title = tagList(
+    # inline-flex + no underline: the whitespace between the two <img>s is a text
+    # node, and navbarPage's brand link underlined it as a stray "_"
     a(href = "https://calcofi.io", `aria-label` = "CalCOFI.io home",
+      style = "display:inline-flex; align-items:center; margin-right:.5rem; text-decoration:none;",
       img(class = "cc-logo-dark",  alt = "CalCOFI", height = "32px",
           src = "https://calcofi.io/brand/v1/logo_calcofi.svg"),
       img(class = "cc-logo-light", alt = "CalCOFI", height = "32px",
