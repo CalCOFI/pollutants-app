@@ -6,6 +6,7 @@ if (!require("librarian")){
 librarian::shelf(
   bslib, dplyr, DT, fs, glue, here, leaflet, purrr, readr, sf, shiny, stringr,
   tidyr,
+  calcofi/calcofi4r,   # the calcofi.io brand contract (cc_brand_head, cc_theme)
   quiet = T)
 options(readr.show_col_types = F)
 
