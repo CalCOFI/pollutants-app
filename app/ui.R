@@ -12,9 +12,9 @@ function(request) page_navbar(
     a(href = "https://calcofi.io", `aria-label` = "CalCOFI.io home",
       class = "d-inline-flex align-items-center text-decoration-none",
       img(class = "cc-logo-dark",  alt = "CalCOFI", height = "32px",
-          src = "https://calcofi.io/brand/v1/logo_calcofi.svg"),
+          src = "https://calcofi.io/brand/v2/logo_calcofi_h.svg"),
       img(class = "cc-logo-light", alt = "CalCOFI", height = "32px",
-          src = "https://calcofi.io/brand/v1/logo_calcofi_light.svg")),
+          src = "https://calcofi.io/brand/v2/logo_calcofi_h_light.svg")),
     "SoCal Marine Pollutants"),
   # cc_brand_head() owns the one <title>, the favicon set, theme.css/js and GA4
   window_title = NA,
