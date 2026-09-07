@@ -43,10 +43,23 @@ function(input, output, session) {
   is_dark <- reactive(calcofi4r::cc_is_dark(input))
 
   # basemap per theme, in one group so a flip can swap it under the markers:
-  # Esri Ocean (base + reference labels) on light, Carto Dark Matter on dark
+  # Esri Ocean (base + reference labels) on light, Esri Dark Gray Canvas (base +
+  # reference labels) on dark. Both keyless. Dark WAS Carto Dark Matter, whose
+  # raster tiles started answering "API KEY REQUIRED" in Sep 2026 (CARTO now
+  # keys its raster basemaps; the vector GL styles the MapLibre apps use are
+  # unaffected) -- so every dark-mode tile was a watermark.
   add_basemap <- function(map, dark) {
     if (dark) {
-      return(addProviderTiles(map, "CartoDB.DarkMatter", group = "basemap"))
+      return(
+        map |>
+          addProviderTiles(
+            "Esri.WorldGrayCanvas",
+            group   = "basemap",
+            options = providerTileOptions(variant = "Canvas/World_Dark_Gray_Base")) |>
+          addProviderTiles(
+            "Esri.WorldGrayCanvas",
+            group   = "basemap",
+            options = providerTileOptions(variant = "Canvas/World_Dark_Gray_Reference")))
     }
     map |>
       addProviderTiles(
